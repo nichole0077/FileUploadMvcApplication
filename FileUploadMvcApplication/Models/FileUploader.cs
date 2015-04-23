@@ -12,6 +12,8 @@ namespace FileUploadMvcApplication.Models
         public string FileName { get; set; }
         public Guid Id { get; set; }
         public bool Approved { get; set; }
+        
+        //[ValidateFile(ErrorMessage = "false!")]
         public HttpPostedFileBase UploadFile { get; set; }
 
     }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
+using System.Xml.Linq;
 using FileUploadMvcApplication.Models;
 
 namespace FileUploadMvcApplication.Controllers
@@ -15,30 +16,19 @@ namespace FileUploadMvcApplication.Controllers
     {
         public ActionResult UploadDocument(FileUploader viewModel)
         {
-            viewModel = (FileUploader)Session["viewModel"];
+            viewModel = (FileUploader) Session["viewModel"];
             viewModel.FileName = viewModel.UploadFile.FileName;
 
-            //FileUploader newFile = new FileUploader();
-            //newFile.FileName = viewModel.FileName;
-            //System.Xml.Serialization.XmlSerializer writer =
-            //    new System.Xml.Serialization.XmlSerializer(typeof(FileUploader));
+            UpdateXmlFile(viewModel);
 
-            //System.IO.StreamWriter file = new System.IO.StreamWriter(
-            //    );
-            //writer.Serialize(file, newFile);
-            //file.Close();
+            //TODO: move this to the button
+            GetSiteHTML();
 
-            //TODO: refactor into UpdateXMLFile
-            XmlDocument xd = new XmlDocument();
-            xd.Load(Server.MapPath("~/Files.xml"));
-            XmlNode nl = xd.SelectSingleNode("//Files");
-            XmlDocument xd2 = new XmlDocument();
-            xd2.LoadXml("<FileUploader><FileName>" + viewModel.FileName + "</FileName></FileUploader>");
-            XmlNode n = xd.ImportNode(xd2.FirstChild, true);
-            nl.AppendChild(n);
-            xd.Save(Server.MapPath("~/Files.xml"));
+            return View(viewModel);
+        }
 
-            //TODO: refactor into GetSiteHTML
+        private static void GetSiteHTML()
+        {
             string urlAddress = "http://google.com";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
@@ -65,38 +55,35 @@ namespace FileUploadMvcApplication.Controllers
                 readStream.Close();
             }
 
-            return View(viewModel);
-            }
+            //using (FileStream fs = new FileStream(Path.Combine(HttpRuntime.AppDomainAppPath, "test.htm"), FileMode.Create))
+            //{
+            //    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+            //    {
+            //        w.WriteLine("<H1>Hello</H1>");
+            //    }
+            //}
+        }
 
-                // POST: /FileUpload/
-            [
-            HttpPost]
+        private void UpdateXmlFile(FileUploader viewModel)
+        {
+            XElement xEle = XElement.Load(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
+            xEle.Add(new XElement("FileName", viewModel.FileName));
+            xEle.Save(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
+        }
+
+        // POST: /FileUpload/
+        [HttpPost]
         public ActionResult ProcessUploadedFile(FileUploader viewModel, HttpPostedFileBase uploadFile)
         {
-            if (ModelState.IsValid)
-            {
-                if (uploadFile == null)
-                { ModelState.AddModelError("File", "Please upload your file"); }
-            }
-            else if (uploadFile.ContentLength > 0)
-            {
-                //int MaxContentLength = 1024 * 1024 * 3; 
-                string[] allowedExtensions = new string[] { ".pdf", ".xml", ".xsd" };
+            //TODO: check for null file, check for file extensions, then keep one page
 
-                if (!allowedExtensions.Contains(uploadFile.FileName.Substring(uploadFile.FileName.LastIndexOf('.'))))
-                {
-                    ModelState.AddModelError("File", "Please choose an apporved file type");
-                }
-                else
-                {
-                    var fileName = Path.GetFileName(uploadFile.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-                    uploadFile.SaveAs(path);
-                }
-            }
+            var fileName = Path.GetFileName(uploadFile.FileName);
+            var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+            uploadFile.SaveAs(path);
+            
             Session["viewModel"] = viewModel;
             return RedirectToAction("UploadDocument");
         }
-        
+
     }
 }
