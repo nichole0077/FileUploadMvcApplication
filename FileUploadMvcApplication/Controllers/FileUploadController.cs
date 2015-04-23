@@ -58,6 +58,7 @@ namespace FileUploadMvcApplication.Controllers
 
                     //TODO: Create the search and replace text: Search - Search the world, Replace - Rule the world now
                     //This is a mock up
+                    //? Use the htmlAgilityPack 
 
                     //FileInfo fi = new FileInfo(Path.Combine(HttpRuntime.AppDomainAppPath, "test.htm"));
                     //var ZipCodesAndCountryCodes = File.ReadLines(fi.FullName).Select(l =>
