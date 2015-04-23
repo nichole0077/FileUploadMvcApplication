@@ -31,37 +31,56 @@ namespace FileUploadMvcApplication.Controllers
         {
             string urlAddress = "http://google.com";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            if (response.StatusCode == HttpStatusCode.OK)
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(urlAddress);
+            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+            using (
+                FileStream fs = new FileStream(Path.Combine(HttpRuntime.AppDomainAppPath, "test.htm"), FileMode.Create))
             {
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader readStream = null;
-
-                if (response.CharacterSet == null)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    readStream = new StreamReader(receiveStream);
-                }
-                else
-                {
-                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-                }
+                    Stream receiveStream = response.GetResponseStream();
+                    StreamReader readStream = null;
 
-                string data = readStream.ReadToEnd();
-                Console.WriteLine(data);
+                    if (response.CharacterSet == null)
+                    {
+                        readStream = new StreamReader(receiveStream);
+                    }
+                    else
+                    {
+                        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                    }
 
-                response.Close();
-                readStream.Close();
+                    string data = readStream.ReadToEnd();
+                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        w.WriteLine(data);
+                    }
+
+                    //TODO: Create the search and replace text: Search - Search the world, Replace - Rule the world now
+                    //This is a mock up
+
+                    //FileInfo fi = new FileInfo(Path.Combine(HttpRuntime.AppDomainAppPath, "test.htm"));
+                    //var ZipCodesAndCountryCodes = File.ReadLines(fi.FullName).Select(l =>
+                    //{
+                    //    var countrySubstr = l.Substring(1405, 30);
+                    //    return new
+                    //    {
+                    //        ZipCode = l.Substring(1395, 5),
+                    //        CountryCode = string.IsNullOrWhiteSpace(countrySubstr)
+                    //                      || countrySubstr == "USA"
+                    //                      || countrySubstr == "United States"
+                    //                      || countrySubstr == "United States of America"
+                    //            ? "US"
+                    //            : countrySubstr
+                    //    };
+                    //});
+
+
+
+                    response.Close();
+                    readStream.Close();
+                }
             }
-
-            //using (FileStream fs = new FileStream(Path.Combine(HttpRuntime.AppDomainAppPath, "test.htm"), FileMode.Create))
-            //{
-            //    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-            //    {
-            //        w.WriteLine("<H1>Hello</H1>");
-            //    }
-            //}
         }
 
         private void UpdateXmlFile(FileUploader viewModel)

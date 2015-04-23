@@ -11,6 +11,8 @@ namespace FileUploadMvcApplication
     {
         public override bool IsValid(object value)
         {
+            //http://haacked.com/archive/2009/11/19/aspnetmvc2-custom-validation.aspx/
+
             var file = value as HttpPostedFileBase;
             List<string> allowedExtensions = new List<string>() {".pdf", ".xml", ".xsd"};
 
