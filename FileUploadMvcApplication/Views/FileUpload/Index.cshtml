@@ -4,14 +4,17 @@
     ViewBag.Title = "title";
 }
 
-
 <h2>File Uploader</h2>
+
+
 @using (@Html.BeginForm("ProcessUploadedFile", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <fieldset>
-         <input type="file" name="UploadFile" id="UploadFile" class="fileupload"/>
-         <input type="submit" id="submit" value="Upload"/>
-        <input type="button" id="cancel" value="Cancel"/>
+        @Html.ValidationMessageFor(model => model.UploadFile)
+        <br/>
+        @Html.TextBoxFor(m => m.UploadFile, null, new { type = "file", @class = "fileupload" })
+        <input type="submit" id="submit" value="Upload" />
+        <input type="button" id="cancel" value="Cancel" />
         <input type="button" id="GetSiteHTML" value="GetSiteHTML" />
     </fieldset>
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace FileUploadMvcApplication.Models
 {
@@ -9,11 +10,13 @@ namespace FileUploadMvcApplication.Models
     {
         
         public string LinkText { get; set; }
+
         public string FileName { get; set; }
         public Guid Id { get; set; }
         public bool Approved { get; set; }
-        
-        //[ValidateFile(ErrorMessage = "false!")]
+
+        [Required]
+        [ValidateFile(ErrorMessage = "File type is not allowed. Please choose a permitted file type")]
         public HttpPostedFileBase UploadFile { get; set; }
 
     }

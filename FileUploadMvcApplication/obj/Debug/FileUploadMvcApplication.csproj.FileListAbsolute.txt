@@ -1,4 +1,3 @@
-c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\obj\Debug\FileUploadMvcApplication.csprojResolveAssemblyReference.cache
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\FileUploadMvcApplication.dll.config
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\FileUploadMvcApplication.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\FileUploadMvcApplication.pdb
@@ -10,6 +9,7 @@ c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\DotNetOpenAuth.OpenId.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\EntityFramework.dll
+c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\HtmlAgilityPack.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\Microsoft.Data.Edm.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\Microsoft.Data.OData.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\Microsoft.Web.Infrastructure.dll
@@ -28,6 +28,8 @@ c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\WebGrease.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\WebMatrix.Data.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\WebMatrix.WebData.dll
+c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\HtmlAgilityPack.pdb
+c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\HtmlAgilityPack.xml
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\EntityFramework.xml
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\Newtonsoft.Json.xml
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\System.Web.Helpers.xml

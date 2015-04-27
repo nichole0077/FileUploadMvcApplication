@@ -11,23 +11,16 @@ namespace FileUploadMvcApplication
     {
         public override bool IsValid(object value)
         {
-            //http://haacked.com/archive/2009/11/19/aspnetmvc2-custom-validation.aspx/
-
             var file = value as HttpPostedFileBase;
             List<string> allowedExtensions = new List<string>() {".pdf", ".xml", ".xsd"};
 
-            //Todo: This goes through 2x. The second time is null - after UpdateXmlFile method
-            //Testing with .pdfi - returns false, but is going through 2x and has null 2x
-            //var result1 = allowedExtensions.Any(v => value.ToString().EndsWith(v));
-
-            if ((file == null) || (file.ContentLength > 1*1024*1024) ||
-                (!allowedExtensions.Any(v => value.ToString().EndsWith(v))))
+            if (!allowedExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
             {
+                ErrorMessage = "Please upload your file of type: " + string.Join(", ", allowedExtensions);
                 return false;
             }
 
             return true;
-
         }
     }
 }

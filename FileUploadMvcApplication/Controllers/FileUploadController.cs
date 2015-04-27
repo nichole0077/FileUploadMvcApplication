@@ -9,25 +9,60 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 using FileUploadMvcApplication.Models;
+using HtmlAgilityPack;
 
 namespace FileUploadMvcApplication.Controllers
 {
     public class FileUploadController : Controller
     {
-        public ActionResult UploadDocument(FileUploader viewModel)
+
+        public ActionResult Index()
         {
-            viewModel = (FileUploader) Session["viewModel"];
-            viewModel.FileName = viewModel.UploadFile.FileName;
-
-            UpdateXmlFile(viewModel);
-
-            //TODO: move this to the button
-            GetSiteHTML();
-
-            return View(viewModel);
+            return View();
         }
 
-        private static void GetSiteHTML()
+        // POST: /FileUpload/
+        [HttpPost]
+        public ActionResult ProcessUploadedFile(FileUploader viewModel, HttpPostedFileBase uploadFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", viewModel);
+            }
+            else
+            {
+                //Get file and save it
+                var fileName = Path.GetFileName(uploadFile.FileName);
+                var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                uploadFile.SaveAs(path);
+
+                //Session["viewModel"] = fileName;
+                //viewModel = Session["viewModel"] as FileUploader;
+                //viewModel.FileName = viewModel.UploadFile.FileName;
+
+                //TODO: Xml file does not have file name
+                //Call function to update the xml file
+                UpdateXmlFile(viewModel);
+
+
+                //GetSiteHTML();
+
+              
+
+                //TODO: view does not have file name
+                return View("UploadDocument", viewModel);
+            }
+        }
+
+        
+        private void UpdateXmlFile(FileUploader viewModel)
+        {
+            XElement xEle = XElement.Load(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
+            xEle.Add(new XElement("FileName", viewModel.FileName));
+            xEle.Save(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
+        }
+
+        private void GetSiteHTML()
         {
             string urlAddress = "http://google.com";
 
@@ -57,53 +92,37 @@ namespace FileUploadMvcApplication.Controllers
                     }
 
                     //TODO: Create the search and replace text: Search - Search the world, Replace - Rule the world now
-                    //This is a mock up
-                    //? Use the htmlAgilityPack 
+                    HtmlDocument testDocument = new HtmlDocument();
+                    testDocument.LoadHtml(Server.MapPath("~/test.htm"));
 
-                    //FileInfo fi = new FileInfo(Path.Combine(HttpRuntime.AppDomainAppPath, "test.htm"));
-                    //var ZipCodesAndCountryCodes = File.ReadLines(fi.FullName).Select(l =>
-                    //{
-                    //    var countrySubstr = l.Substring(1405, 30);
-                    //    return new
-                    //    {
-                    //        ZipCode = l.Substring(1395, 5),
-                    //        CountryCode = string.IsNullOrWhiteSpace(countrySubstr)
-                    //                      || countrySubstr == "USA"
-                    //                      || countrySubstr == "United States"
-                    //                      || countrySubstr == "United States of America"
-                    //            ? "US"
-                    //            : countrySubstr
-                    //    };
-                    //});
+                    var textNodes = testDocument.DocumentNode.SelectNodes("/div/text()[contains(.,'Search the world')]");
+                    if (textNodes != null)
+                        foreach (HtmlTextNode node in textNodes)
+                            node.Text = node.Text.Replace("Search the world", "Rule the world now");
 
+                    //testDocument.Save();
 
-
-                    response.Close();
-                    readStream.Close();
                 }
+
+                //public ActionResult UploadDocument(FileUploader viewModel)
+                //{
+                //    if (!ModelState.IsValid)
+                //    {
+                //        return View(viewModel);
+                //    }
+
+                //    viewModel = (FileUploader)Session["viewModel"];
+                //    viewModel.FileName = viewModel.UploadFile.FileName;
+
+                //    UpdateXmlFile(viewModel);
+
+                //    //TODO: move this to the button
+                //    GetSiteHTML();
+
+                //    return Content("Thanks for uploading", "text/plain");
+                //}
+
             }
         }
-
-        private void UpdateXmlFile(FileUploader viewModel)
-        {
-            XElement xEle = XElement.Load(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
-            xEle.Add(new XElement("FileName", viewModel.FileName));
-            xEle.Save(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
-        }
-
-        // POST: /FileUpload/
-        [HttpPost]
-        public ActionResult ProcessUploadedFile(FileUploader viewModel, HttpPostedFileBase uploadFile)
-        {
-            //TODO: check for null file, check for file extensions, then keep one page
-
-            var fileName = Path.GetFileName(uploadFile.FileName);
-            var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-            uploadFile.SaveAs(path);
-            
-            Session["viewModel"] = viewModel;
-            return RedirectToAction("UploadDocument");
-        }
-
     }
 }
