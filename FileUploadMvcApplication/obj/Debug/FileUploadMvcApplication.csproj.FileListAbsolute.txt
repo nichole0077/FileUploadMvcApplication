@@ -80,3 +80,4 @@ c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\bin\zh-Hant\System.Spatial.resources.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\obj\Debug\FileUploadMvcApplication.dll
 c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\obj\Debug\FileUploadMvcApplication.pdb
+c:\users\ncarlson\documents\visual studio 2013\Projects\FileUploadMvcApplication\FileUploadMvcApplication\obj\Debug\FileUploadMvcApplication.csprojResolveAssemblyReference.cache

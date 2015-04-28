@@ -14,9 +14,16 @@ namespace FileUploadMvcApplication
             var file = value as HttpPostedFileBase;
             List<string> allowedExtensions = new List<string>() {".pdf", ".xml", ".xsd"};
 
-            if (!allowedExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+            if (file == null)
             {
-                ErrorMessage = "Please upload your file of type: " + string.Join(", ", allowedExtensions);
+                {
+                    ErrorMessage = "Please choose a file of type: " + string.Join(", ", allowedExtensions);
+                    return false;
+                }
+            }
+            else if (!allowedExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+            {
+                ErrorMessage = "Your file was not the correst type. Please upload your file of type: " + string.Join(", ", allowedExtensions);
                 return false;
             }
 

@@ -16,7 +16,7 @@ namespace FileUploadMvcApplication.Models
         public bool Approved { get; set; }
 
         [Required]
-        [ValidateFile(ErrorMessage = "File type is not allowed. Please choose a permitted file type")]
+        [ValidateFile]
         public HttpPostedFileBase UploadFile { get; set; }
 
     }

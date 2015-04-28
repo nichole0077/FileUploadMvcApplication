@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
@@ -40,14 +41,11 @@ namespace FileUploadMvcApplication.Controllers
                 viewModel.FileName = viewModel.UploadFile.FileName;
 
                 //Call function to update the xml file
-                //TODO: uncomment
-                //UpdateXmlFile(viewModel);
+                UpdateXmlFile(viewModel);
 
-                //TODO: uncomment
                 GetSiteHTML();
 
                 ReplaceString();
-
 
                 return View("UploadDocument", viewModel);
             }
@@ -63,7 +61,7 @@ namespace FileUploadMvcApplication.Controllers
 
         private void GetSiteHTML()
         {
-            string urlAddress = "http://google.com";
+            string urlAddress = "http://test.nationalwesternlife.com/financial_copy.aspx?sub=sec";
 
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(urlAddress);
             HttpWebResponse response = (HttpWebResponse) request.GetResponse();
@@ -90,8 +88,7 @@ namespace FileUploadMvcApplication.Controllers
                         w.WriteLine(data);
                     }
 
-                    //TODO: uncomment and remove from ProcessUpload method
-                    //ReplaceString();
+                    ReplaceString();
                 }
 
             }
@@ -99,27 +96,10 @@ namespace FileUploadMvcApplication.Controllers
 
         private void ReplaceString()
         {
-            //TODO: Create the search and replace text: Search - Search the world, Replace - Rule the world now
-            //HtmlDocument testDocument = new HtmlDocument();
-            //testDocument.LoadHtml(Server.MapPath("~/test.htm"));
-
-            //var textNodes = testDocument.DocumentNode.SelectNodes("/div/text()[contains(.,'Search the world')]");
-            //if (textNodes != null)
-            //    foreach (HtmlTextNode node in textNodes)
-            //        node.Text = node.Text.Replace("Search the world", "Rule the world");
-
-            //testDocument.Save();
-
-            StreamReader reading = System.IO.File.OpenText(Server.MapPath("~/test.htm"));
-            string str;
-            while ((str = reading.ReadLine()) != null)
-            {
-                if (str.Contains("some text"))
-                {
-                    File.WriteAllText("test.txt", File.ReadAllText("test.txt").Replace("some text", "some other text"));
-                    StreamWriter write = new StreamWriter("test.txt");
-                }
-            }
+            //TODO: Replace only the first occurence
+            string file = System.IO.File.ReadAllText(Server.MapPath("~/test.htm"));
+            file = file.Replace("8-K", "turkey turkey turkey");
+            System.IO.File.WriteAllText(Server.MapPath("~/test.htm"), file);
         }
     }
 }
