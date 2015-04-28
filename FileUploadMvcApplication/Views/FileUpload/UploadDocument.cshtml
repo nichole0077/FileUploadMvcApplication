@@ -4,9 +4,13 @@
     ViewBag.Title = "title";
 }
 
-@using (Html.BeginForm())
+@using (@Html.BeginForm())
 {
-        <h2>Success!!!</h2>
-        <h1>Your file is now listed on <a href="http://test.nationalwesternlife.com/financial_copy.aspx?sub=sec">this</a> page</h1>
-    <h3>Your file name is: </h3>@Model.FileName
+    <h2>Success!!!</h2>
+    <h1>Your file is now listed on <a href="http://test.nationalwesternlife.com/financial_copy.aspx?sub=sec">this</a> page
+    </h1>
+  
+    <h3>
+        Your file name is: @Model.FileName
+    </h3>
 }

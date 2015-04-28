@@ -36,25 +36,24 @@ namespace FileUploadMvcApplication.Controllers
                 var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
                 uploadFile.SaveAs(path);
 
-                //Session["viewModel"] = fileName;
-                //viewModel = Session["viewModel"] as FileUploader;
-                //viewModel.FileName = viewModel.UploadFile.FileName;
+                Session["viewModel"] = fileName;
+                viewModel.FileName = viewModel.UploadFile.FileName;
 
-                //TODO: Xml file does not have file name
                 //Call function to update the xml file
-                UpdateXmlFile(viewModel);
+                //TODO: uncomment
+                //UpdateXmlFile(viewModel);
+
+                //TODO: uncomment
+                GetSiteHTML();
+
+                ReplaceString();
 
 
-                //GetSiteHTML();
-
-              
-
-                //TODO: view does not have file name
                 return View("UploadDocument", viewModel);
             }
         }
 
-        
+
         private void UpdateXmlFile(FileUploader viewModel)
         {
             XElement xEle = XElement.Load(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
@@ -91,37 +90,35 @@ namespace FileUploadMvcApplication.Controllers
                         w.WriteLine(data);
                     }
 
-                    //TODO: Create the search and replace text: Search - Search the world, Replace - Rule the world now
-                    HtmlDocument testDocument = new HtmlDocument();
-                    testDocument.LoadHtml(Server.MapPath("~/test.htm"));
-
-                    var textNodes = testDocument.DocumentNode.SelectNodes("/div/text()[contains(.,'Search the world')]");
-                    if (textNodes != null)
-                        foreach (HtmlTextNode node in textNodes)
-                            node.Text = node.Text.Replace("Search the world", "Rule the world now");
-
-                    //testDocument.Save();
-
+                    //TODO: uncomment and remove from ProcessUpload method
+                    //ReplaceString();
                 }
 
-                //public ActionResult UploadDocument(FileUploader viewModel)
-                //{
-                //    if (!ModelState.IsValid)
-                //    {
-                //        return View(viewModel);
-                //    }
+            }
+        }
 
-                //    viewModel = (FileUploader)Session["viewModel"];
-                //    viewModel.FileName = viewModel.UploadFile.FileName;
+        private void ReplaceString()
+        {
+            //TODO: Create the search and replace text: Search - Search the world, Replace - Rule the world now
+            //HtmlDocument testDocument = new HtmlDocument();
+            //testDocument.LoadHtml(Server.MapPath("~/test.htm"));
 
-                //    UpdateXmlFile(viewModel);
+            //var textNodes = testDocument.DocumentNode.SelectNodes("/div/text()[contains(.,'Search the world')]");
+            //if (textNodes != null)
+            //    foreach (HtmlTextNode node in textNodes)
+            //        node.Text = node.Text.Replace("Search the world", "Rule the world");
 
-                //    //TODO: move this to the button
-                //    GetSiteHTML();
+            //testDocument.Save();
 
-                //    return Content("Thanks for uploading", "text/plain");
-                //}
-
+            StreamReader reading = System.IO.File.OpenText(Server.MapPath("~/test.htm"));
+            string str;
+            while ((str = reading.ReadLine()) != null)
+            {
+                if (str.Contains("some text"))
+                {
+                    File.WriteAllText("test.txt", File.ReadAllText("test.txt").Replace("some text", "some other text"));
+                    StreamWriter write = new StreamWriter("test.txt");
+                }
             }
         }
     }
