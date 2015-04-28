@@ -32,6 +32,9 @@ namespace FileUploadMvcApplication.Controllers
             }
             else
             {
+                //http://stackoverflow.com/questions/21124712/mvc-multiple-file-upload-with-additional-data
+                //TODO: http://jsbin.com/EWOCUXIS/1/edit?html,css,js,output
+
                 //Get file and save it
                 var fileName = Path.GetFileName(uploadFile.FileName);
                 var path = Path.Combine(Server.MapPath("~/Images/"), fileName);

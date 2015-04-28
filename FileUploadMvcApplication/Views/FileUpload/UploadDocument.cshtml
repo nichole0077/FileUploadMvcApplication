@@ -9,8 +9,13 @@
     <h2>Success!!!</h2>
     <h1>Your file is now listed on <a href="http://test.nationalwesternlife.com/financial_copy.aspx?sub=sec">this</a> page
     </h1>
-  
+
     <h3>
-        Your file name is: @Model.FileName
+        @*Your file name is: @Model.FileName*@
+        Your file will be saved with the name in the box below. Please modify it now if needed.
+        <br/>
+        Click 'Confirm' when ready.
     </h3>
+    @Html.TextBoxFor(m => m.LinkText, new { placeholder = @Model.FileName })
+    <input type="submit" id="submit" value="Confirm" />
 }

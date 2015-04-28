@@ -5,8 +5,17 @@
 }
 
 <h2>File Uploader</h2>
+<script language="javascript">
+function AdditionalFileInput() {
+        $("#additional-files").before("<div class='file-upload'><label for='Title'>Title:</label><input type='text' name='titles' id='Title' /><br /><label for='Version'>Version:</label><input type='text' name='versions' id='Version' /><br /><label for='File'>Filename:</label><input type='file' name='files' id='File' /><a href='#' onclick='RemoveFileInput(event)'>Remove</a></div>");
+}
+function RemoveFileInput(e) {
+    var par = $(e.target).parent();
+    par.remove();
+}
+    </script>
 
-
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 @using (@Html.BeginForm("ProcessUploadedFile", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <fieldset>
@@ -14,6 +23,7 @@
         <br/>
         @Html.TextBoxFor(m => m.UploadFile, null, new { type = "file", @class = "fileupload" })
         <input type="submit" id="submit" value="Upload" />
-        <input type="button" id="cancel" value="Cancel" />
+        <input type="button" id="cancel" value="Cancel"/>
+        <a id="additional-files" href="#" onclick="AdditionalFileInput()">Additional File</a>
     </fieldset>
 }
