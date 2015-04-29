@@ -24,41 +24,87 @@ namespace FileUploadMvcApplication.Controllers
 
         // POST: /FileUpload/
         [HttpPost]
-        public ActionResult ProcessUploadedFile(FileUploader viewModel, HttpPostedFileBase uploadFile)
+        public ActionResult ConfirmFileNames(FileUploader viewModel, IList<HttpPostedFileBase> uploadFile)
         {
+            var httpPostedFileBases = uploadFile as IList<HttpPostedFileBase> ?? uploadFile.ToList();
+
             if (!ModelState.IsValid)
             {
                 return View("Index", viewModel);
             }
             else
             {
-                //http://stackoverflow.com/questions/21124712/mvc-multiple-file-upload-with-additional-data
-                //TODO: http://jsbin.com/EWOCUXIS/1/edit?html,css,js,output
+                foreach (var file in httpPostedFileBases)
+                {
+                    Session["viewModel"] = file.FileName;
+                    viewModel.FileName = file.FileName;
+                }
+            }
 
+            return View("ConfirmFileNames", uploadFile);
+        }
+
+        // POST: /FileUpload/
+        [HttpPost]
+        public ActionResult ProcessUploadedFile(FileUploader viewModel, IList<HttpPostedFileBase> uploadFile)
+        {
+            var httpPostedFileBases = uploadFile as IList<HttpPostedFileBase> ?? uploadFile.ToList();
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", viewModel);
+            }
+            else
+            {
+               
+                foreach (var file in httpPostedFileBases)
+                {
+                    Session["viewModel"] = file.FileName;
+                    viewModel.FileName = file.FileName;
+
+
+                    //viewModel.FileName = viewModel.UploadFile.ToString();
+                    //var fileName = Path.GetFileName(httpPostedFileBases.FileName);
+                    //var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    //httpPostedFileBases.SaveAs(path);
+
+                    //Session["viewModel"] = fileName;
+                    //viewModel.FileName = viewModel.UploadFile.FileName;
+                    file.SaveAs(Server.MapPath("~/Images/" + file.FileName));
+                    UpdateXmlFile(viewModel);
+                }
                 //Get file and save it
-                var fileName = Path.GetFileName(uploadFile.FileName);
-                var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-                uploadFile.SaveAs(path);
+                //var fileName = Path.GetFileName(httpPostedFileBases.FileName);
+                //var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                //httpPostedFileBases.SaveAs(path);
 
-                Session["viewModel"] = fileName;
-                viewModel.FileName = viewModel.UploadFile.FileName;
+                //Session["viewModel"] = fileName;
+                //viewModel.FileName = viewModel.UploadFile.FileName;
+                
 
                 //Call function to update the xml file
-                UpdateXmlFile(viewModel);
+                
 
-                GetSiteHTML();
+                //GetSiteHTML();
 
-                ReplaceString();
+                //ReplaceString();
 
-                return View("UploadDocument", viewModel);
+                //Session["viewModel"] = httpPostedFileBases.Count;
+                //viewModel = httpPostedFileBases.Count;
+
+                return View("UploadDocument", uploadFile);
             }
         }
 
 
         private void UpdateXmlFile(FileUploader viewModel)
         {
+            DateTime time = DateTime.Now;             
+            string format = "MMM ddd d HH:mm yyyy";
+
             XElement xEle = XElement.Load(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
             xEle.Add(new XElement("FileName", viewModel.FileName));
+            xEle.Add(new XElement("DateTime", time.ToString(format)));
             xEle.Save(Path.Combine(HttpRuntime.AppDomainAppPath, "Files.xml"));
         }
 

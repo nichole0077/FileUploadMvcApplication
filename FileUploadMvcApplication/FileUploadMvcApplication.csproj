@@ -292,6 +292,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\FileUpload\UploadDocument.cshtml" />
     <Content Include="Views\FileUpload\Index.cshtml" />
+    <Content Include="Views\FileUpload\ConfirmFileNames.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

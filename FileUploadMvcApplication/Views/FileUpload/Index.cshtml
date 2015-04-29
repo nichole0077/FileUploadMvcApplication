@@ -1,29 +1,76 @@
 ﻿@model FileUploadMvcApplication.Models.FileUploader
 
+
 @{
     ViewBag.Title = "title";
 }
 
 <h2>File Uploader</h2>
-<script language="javascript">
-function AdditionalFileInput() {
-        $("#additional-files").before("<div class='file-upload'><label for='Title'>Title:</label><input type='text' name='titles' id='Title' /><br /><label for='Version'>Version:</label><input type='text' name='versions' id='Version' /><br /><label for='File'>Filename:</label><input type='file' name='files' id='File' /><a href='#' onclick='RemoveFileInput(event)'>Remove</a></div>");
-}
-function RemoveFileInput(e) {
-    var par = $(e.target).parent();
-    par.remove();
-}
-    </script>
+<script type="text/javascript">
+    function addLabel() {
+        var label = document.createElement("Label");
+        label.innerHTML = "New Label";
+    }
 
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-@using (@Html.BeginForm("ProcessUploadedFile", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    function addtxtBox() {
+        //var count=10;
+        var b = "";
+        var a = document.frm.txt.value;
+
+        for (var i = 1; i <= a; i++) {
+            document.write('<table width="40%">');
+            document.write('<tr><td>Name :</td>');
+            document.write('<td><input type="text" name="txt"></td></tr>');
+            document.write('</table>');
+        }
+    }
+
+</script>
+
+@using (@Html.BeginForm("ProcessUploadedFile", "FileUpload", FormMethod.Post, new {enctype = "multipart/form-data"}))
 {
+    @Html.AntiForgeryToken()
+
     <fieldset>
-        @Html.ValidationMessageFor(model => model.UploadFile)
+
+        @Html.ValidationMessageFor(model => model.FileName)
         <br/>
-        @Html.TextBoxFor(m => m.UploadFile, null, new { type = "file", @class = "fileupload" })
-        <input type="submit" id="submit" value="Upload" />
-        <input type="button" id="cancel" value="Cancel"/>
-        <a id="additional-files" href="#" onclick="AdditionalFileInput()">Additional File</a>
-    </fieldset>
+        @Html.TextBoxFor(m => m.UploadFile, null, new {type = "file", @class = "fileupload", multiple = "true"})
+        <input type="submit" id="submit" value="Confirm" />
+        <input type="reset" id="reset" value="Reset"/>
+
+        @*@if (Model.FileName != null)
+        {
+            foreach (var i in Model.UploadFile.ToList())
+            {
+                <tr>
+                    <td>
+                        <h3>@i.FileName</h3>
+                    </td>
+                </tr>
+            }
+        }*@
+
+        @*
+
+        <input type="submit" id="submit" value="Upload"/>
+
+            @Html.HiddenFor(model => model.FileName)
+        @Html.HiddenFor(model => model.UploadFile)
+
+        @Html.ValidationMessageFor(model => model.UploadFile)
+        @if (Model.UploadFile != null)
+        {
+            <h3>test here</h3>
+            for (var i = 0; i < Model.UploadFile.Count; i++)
+            {
+                <h3>loop testing</h3>
+            }
+            foreach (var i in Model.UploadFile.ToList())
+            {
+                <h3>test1</h3>
+                <h3>i.FileName</h3>
+            }
+        }*@
+            </fieldset>
 }

@@ -1,0 +1,28 @@
+﻿
+
+    @model IList<HttpPostedFileBase>
+
+    @{
+    ViewBag.Title = "ConfirFileNames";
+    }
+
+    @using (@Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    <h3>
+        Your file will be saved with the name in the box below. Please modify it now if needed.
+        <br />
+        Click 'Confirm' when ready.
+    </h3>
+        foreach (var i in Model.ToList())
+        {
+            <tr>
+                <td>
+                    <h3>@i.FileName</h3>
+                    
+                    <input type="text" name="TextBox" value="" />
+                    <input type="submit" id="submit" value="Confirm" />
+                </td>
+            </tr>
+        }
+    }

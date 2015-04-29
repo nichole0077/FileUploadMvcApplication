@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Web;
 
@@ -11,21 +9,23 @@ namespace FileUploadMvcApplication
     {
         public override bool IsValid(object value)
         {
-            var file = value as HttpPostedFileBase;
-            List<string> allowedExtensions = new List<string>() {".pdf", ".xml", ".xsd"};
+            var fileList = value as IList<HttpPostedFileBase>;
+            var allowedExtensions = new List<string> {".pdf", ".xml", ".xsd"};
 
-            if (file == null)
+            if (fileList == null)
             {
                 {
                     ErrorMessage = "Please choose a file of type: " + string.Join(", ", allowedExtensions);
                     return false;
                 }
             }
-            else if (!allowedExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.'))))
+            if (fileList.Any(file => !allowedExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.')))))
             {
-                ErrorMessage = "Your file was not the correst type. Please upload your file of type: " + string.Join(", ", allowedExtensions);
+                ErrorMessage = "Your file was not the correst type. Please upload your file of type: " +
+                               string.Join(", ", allowedExtensions);
                 return false;
             }
+            
 
             return true;
         }
